@@ -98,6 +98,7 @@ static CGFloat const RZErrorWindowBlackoutAnimationInterval = 0.5f;
     messageWindow.rootViewController = rootVC;
     //Automatically adds itself
     messageWindow.hidden = NO;
+    messageWindow.windowLevel = UIWindowLevelAlert;
     return messageWindow;
 }
 
