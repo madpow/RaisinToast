@@ -192,7 +192,7 @@ static CGFloat const RZErrorWindowBlackoutAnimationInterval = 0.5f;
         [self hideDisplayedErrorAnimated:animated force:NO];
     }
     else {
-        NSInteger index = [self.errorsToDisplay indexOfObject:error];
+        NSInteger index = [[NSNumber numberWithUnsignedInteger:[self.errorsToDisplay indexOfObject:error]] integerValue];
         if ( index == 1 ) {
             [self hideDisplayedErrorAnimated:animated force:NO];
         } else {
