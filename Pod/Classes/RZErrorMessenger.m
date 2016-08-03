@@ -181,7 +181,7 @@ static NSString * const kRZErrorMessengerErrorKeyLevel = @"RZErrorMessengerError
     RZErrorMessengerLevel level = kRZErrorMessengerLevelError;
     NSNumber *errorValue = self.userInfo[kRZErrorMessengerErrorKeyLevel];
     if ( errorValue != nil ) {
-        level = [errorValue integerValue];
+        level = (u_int8_t)[errorValue integerValue];
     }
     return level;
 }
