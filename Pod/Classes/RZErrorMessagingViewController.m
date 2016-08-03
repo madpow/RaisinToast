@@ -68,15 +68,28 @@ static CGFloat const kErrorMessagingViewVerticalPadding = 20.0f;
 
 #pragma mark - UIViewController methods
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    // Since we are presented in a different window.  Rotation is handled a bit odd...  May make this better later though.
-    CGFloat width = (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) ? self.view.superview.frame.size.width : self.view.superview.frame.size.height;
-    width -= 2 * _errorMessagingViewVerticalPadding;
-    CGFloat newHeight = [self updatedHeightWithWidth:width];
-    self.heightConstraint.constant = newHeight;
-    self.bottomAnimationConstraint.constant = newHeight - _errorMessagingViewVerticalPadding;
-    [self.view layoutIfNeeded];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    // This is basically an animation block
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        
+        // Get the new orientation if you want
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        
+        // Adjust your views
+        // Since we are presented in a different window.  Rotation is handled a bit odd...  May make this better later though.
+        CGFloat width = (UIInterfaceOrientationIsPortrait(orientation)) ? self.view.superview.frame.size.width : self.view.superview.frame.size.height;
+        width -= 2 * self.errorMessagingViewVerticalPadding;
+        CGFloat newHeight = [self updatedHeightWithWidth:width];
+        self.heightConstraint.constant = newHeight;
+        self.bottomAnimationConstraint.constant = newHeight - self.errorMessagingViewVerticalPadding;
+        [self.view layoutIfNeeded];
+        
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        // Anything else you need to do at the end
+    }];
 }
 
 #pragma mark - RZMessagingViewController Protocol
